@@ -64,5 +64,14 @@ if __name__=='__main__':
     print G.number_of_nodes()
     print G.number_of_edges()
 
+    count = 0
+    for node in G.nodes():
+        degree =  G.in_degree(node)
+        print degree
+        if degree == 0:
+            count = count+1
+
+    print "count=", count
+
     nx.write_gml(G, 'ABhatarozatok.gml')
     # saveGML(G)

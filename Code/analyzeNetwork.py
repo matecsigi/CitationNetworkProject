@@ -1,6 +1,21 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+def saveGML(G):
+    """Saves the network in a gml format."""
+    g = igraph.Graph(directed=True)
+    g.add_vertices(G.nodes())
+    for node in G.nodes():
+        g.vs[node]["jogtar filename"] = G.node[node]["jogtar filename"]
+        g.vs[node]["type of decision"] = G.node[node]["type of decision"]
+        g.vs[node]["title"] = G.node[node]["title"]
+        g.vs[node]["year"] = G.node[node]["year"]
+        g.vs[node]["all participating judges"] = G.node[node]["all participating judges"]
+        g.vs[node]["dissenting judges"] = G.node[node]["dissenting judges"]
+        g.vs[node]["drafting judge"] = G.node[node]["drafting judge"]
+    g.add_edges(G.edges())
+    g.save("ABhatarozatok.gml")
+
 def plotRichClub(G):
     try:
         rc = nx.rich_club_coefficient(G, normalized=True, Q=500)

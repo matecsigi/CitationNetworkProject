@@ -8,21 +8,6 @@ def stringFromUnicode(unicode):
     string = string.strip()
     return string
 
-def saveGML(G):
-    """Saves the network in a gml format."""
-    g = igraph.Graph(directed=True)
-    g.add_vertices(G.nodes())
-    for node in G.nodes():
-        g.vs[node]["jogtar filename"] = G.node[node]["jogtar filename"]
-        g.vs[node]["type of decision"] = G.node[node]["type of decision"]
-        g.vs[node]["title"] = G.node[node]["title"]
-        g.vs[node]["year"] = G.node[node]["year"]
-        g.vs[node]["all participating judges"] = G.node[node]["all participating judges"]
-        g.vs[node]["dissenting judges"] = G.node[node]["dissenting judges"]
-        g.vs[node]["drafting judge"] = G.node[node]["drafting judge"]
-    g.add_edges(G.edges())
-    g.save("ABhatarozatok.gml")
-
 if __name__=='__main__':
 
     df = pd.read_excel('../Data/ABhatarozatok_v2.xlsx', sheet_name='ABhatarozatok')
@@ -61,17 +46,28 @@ if __name__=='__main__':
               if G.has_node(neighbor) is True:
                 G.add_edge(node, neighbor)
 
-    print G.number_of_nodes()
-    print G.number_of_edges()
-
-    count = 0
-    for node in G.nodes():
-        degree =  G.in_degree(node)
-        print degree
-        if degree == 0:
-            count = count+1
-
-    print "count=", count
-
+    print "ABhatarozatok graph, nodes:", G.number_of_nodes(), " edges:", G.number_of_edges()
     nx.write_gml(G, 'ABhatarozatok.gml')
+
+    #G_reduced
+    zeroDegreeCounter = 0
+    removeNodes = []
+    G_reduced = G.copy()
+    for node in G_reduced.nodes():
+        if (G_reduced.in_degree(node) == 0) and (G_reduced.out_degree(node) == 0):
+            removeNodes.append(node)
+            zeroDegreeCounter = zeroDegreeCounter+1
+    G_reduced.remove_nodes_from(removeNodes)
+
+    print "ABhatarozatok-reduced graph, nodes:", G_reduced.number_of_nodes(), " edges:", G_reduced.number_of_edges()
+    nx.write_gml(G_reduced, 'ABhatarozatok-reduced.gml')
+
+    # count = 0
+    # for node in G.nodes():
+    #     in_degree =  G.in_degree(node)
+    #     out_degree =  G.out_degree(node)
+    #     if in_degree == 0 and out_degree == 0:
+    #         count = count+1
+    # print "count=", count
+
     # saveGML(G)

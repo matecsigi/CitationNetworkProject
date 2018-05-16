@@ -1,0 +1,10 @@
+vcount 7922 
+ecount 51804 
+avgdeg	 13.07852 
+avgdeg_in	 6.539258 
+avgdeg_out	 6.539258 
+avgdist	 3.34363 
+diameter	 11 
+max_cluster_size	 7880 
+max_degree	 1449 
+clustering	 0.2743404 

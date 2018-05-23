@@ -55,6 +55,11 @@ max_cluster<-max(clusters(g)$csize)
 t<-mean(transitivity(g,type="local")[which(degree(g)>1)])
 cat("vcount", vcount(g), "\necount", ecount(g), "\navgdeg\t", (ecount(g)*2)/vcount(g), "\navgdeg_in\t", avg_degree_in, "\navgdeg_out\t", avg_degree_out, "\navgdist\t", avgdist, "\ndiameter\t", diam, "\nmax_cluster_size\t", max_cluster, "\nmax_degree\t", max_degree,"\nclustering\t", t,"\n", file=txtFile, append=TRUE)
 
+g2 <- as.undirected(g)
+wc <- fastgreedy.community(g2)
+modularity(wc)
+plot(g2, vertex.label=NA, vertex.size=2.5, vertex.color=membership(wc), layout=layout_with_graphopt(g2, niter=10000))
+
 #plot network
 V(g)$color="blue"
 V(g)$size=1
